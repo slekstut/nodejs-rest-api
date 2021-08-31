@@ -58,6 +58,10 @@ app.use((error, req, res, next) => {
 // mongoose.connect('process.env.CONNECT_STRING')
 mongoose.connect('mongodb+srv://slekstut:password000%21@cluster0.kzkvm.mongodb.net/messages?retryWrites=true&w=majority', { useNewUrlParser: true }, { useUnifiedTopology: true } )
 .then(result => {
- app.listen(8080);
+ const server = app.listen(8080);
+ const io = require('./socket').init(server);
+ io.on('connection', socket => {
+     console.log('Client connected.');
+ });
 })
 .catch(err => console.log(err));
